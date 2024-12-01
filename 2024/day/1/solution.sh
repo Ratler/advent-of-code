@@ -18,6 +18,7 @@ done
 
 echo "Part 1: $sum"
 
+# Part 2
 sum=0
 for ((i=0; i<${#l2[@]}; i++)); do
   (( d2[${l2[i]}]++ ))
