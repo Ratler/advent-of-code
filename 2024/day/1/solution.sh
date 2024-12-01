@@ -12,12 +12,8 @@ fi
 # Part 1
 sum=0
 for ((i=0; i<${#l1[@]}; i++)); do
-  diff=$((l1[i] - l2[i]))
-  if [[ "$diff" -gt 0 ]]; then
-    ((sum+=diff))
-  else 
-    ((sum+=(diff * -1)))
-  fi
+  diff=$(( l1[i] - l2[i] ))
+  (( sum+=${diff#-} ))
 done
 
 echo "Part 1: $sum"
