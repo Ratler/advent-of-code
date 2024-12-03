@@ -31,4 +31,4 @@ main() {
 }
 
 echo "Part 1: $(main "^mul\([0-9]+,[0-9]+\)")"
-echo "Part 2: $(main "^mul\([0-9]+,[0-9]+\)|^do\(\)|^don't\(\)")"
+echo "Part 2: $(main "^(mul\([0-9]+,[0-9]+\)|do\(\)|don't\(\))")"
