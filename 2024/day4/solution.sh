@@ -5,23 +5,6 @@ rows=${#input[@]}
 cols=${#input[0]}
 search_dir=("0 1" "1 0" "1 1" "1 -1" "-1 1" "-1 -1" "0 -1" "-1 0")
 
-#    0  1  2  3  4  5  6  7  8  9
-# 0  M  M  M  S  X  X  M  A  S  M
-# 1  M  S  A  M  X  M  S  M  S  A
-# 2  A  M  X  S  X  M  A  A  M  M
-# 3  M  S  A  M  A  S  M  S  M  X
-# 4  X  M  A  S  A  M  X  A  M  M
-# 5  X  X  A  M  M  X  X  A  M  A
-# 6  S  M  S  M  S  A  S  X  S  S
-# 7  S  A  X  A  M  A  S  A  A  A
-# 8  M  A  M  M  M  X  M  M  M  M
-# 9  M  X  M  X  A  X  M  A  S  X
-
-
-debug() {
-  echo "debug($*)" >&2
-}
-
 search_direction() {
   local word idx x y dir_x dir_y word_size
   word="$1"
@@ -65,9 +48,7 @@ search() {
 
   echo $sum
 }
-# M M S S M S
-#  A   A   A
-# S S M M M S
+
 part2() {
   local sum
   sum=0
@@ -84,6 +65,5 @@ part2() {
   echo $sum
 }
 
-debug "grid size: $rows x $cols"
 echo "Part 1: $(search "XMAS")"
 echo "Part 2: $(part2)"
