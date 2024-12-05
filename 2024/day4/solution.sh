@@ -50,7 +50,7 @@ search() {
 }
 
 part2() {
-  local sum
+  local sum regex
   sum=0
   regex='MSSM|SMMS|SMSM|MSMS'
 
