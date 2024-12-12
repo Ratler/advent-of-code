@@ -16,12 +16,12 @@ direction=3 # assume up at start
 # 1  . . . . . . . . . #
 # 2  . . . . . . . . . .
 # 3  . . # . . . . . . .
-# 4  . . . . . # . . . .
+# 4  . . . . . . . # . .
 # 5  . . . . . . . . . .
 # 6  . # . . ^ . . . . .
 # 7  . . . . . . . . # .
 # 8  # . . . . . . . . .
-# 9  . . . . . # . . . .
+# 9  . . . . . . # . . .
 #
 
 
@@ -43,12 +43,20 @@ step_foward() {
 }
 
 check_obstacle() {
+  local tmp_x tmp_y
+
   case $direction in
-    0) echo "$x,$((y + 1))" ;;
-    1) echo "$((x + 1)),$y" ;; 
-    2) echo "$x,$((y - 1))" ;;
-    3) echo "$((x - 1)),$y" ;;
+    0) tmp_x=$x; tmp_y=$((y + 1)) ;;
+    1) tmp_x=$((x + 1)); tmp_y=$y ;;
+    2) tmp_x=$x; tmp_y=$((y - 1)) ;;
+    3) tmp_x=$((x - 1)); tmp_y=$y ;;
   esac
+
+  if [[ ${input[$tmp_x]:$tmp_y:1} == "#" ]]; then
+    return 0
+  fi
+
+  return 1
 }
 
 check_valid_move() {
@@ -56,8 +64,7 @@ check_valid_move() {
     return 2
   fi
 
-  o=$(check_obstacle)
-  if [[ ${input[${o%,*}]:${o#*,}:1} == "#" ]]; then
+  if check_obstacle; then
     return 1
   fi
 
@@ -87,23 +94,26 @@ find_starting_position() {
   done
 }
 
-part1() {
+main() {
   find_starting_position
 
   while true; do
     check_valid_move
-    case $? in
-      0)
-        add_pos_to_path
-        step_foward 
-        ;;
+    retval=$?
+
+    if (( retval == 0 )); then
+      add_pos_to_path
+    fi
+
+    case $retval in
+      0) step_foward ;;
       1) turn_right ;;
       2) break ;;
     esac
   done
 
-  echo "$sum"
+  echo "Part1: $sum"
 }
 
 debug "grid size: $rows x $cols"
-echo "Part 1: $(part1)"
+main
