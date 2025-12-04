@@ -51,14 +51,6 @@ close $fp
 
 set part1 0; set part2 0
 
-for {set i 0} {$i < $rows} {incr i} {
-  for {set j 0} {$j < $cols} {incr j} {
-    if {[checkAdjacent $i $j]} {
-      incr part1
-    }
-  }
-}
-
 set done ""
 
 while {$done != 0} { 
@@ -72,13 +64,12 @@ while {$done != 0} {
       }
     }
   }
+  if {$part1 == 0} { set part1 $part2 }
   if {[llength $remove] > 0} {
     foreach r $remove {
       set paperGrid([lindex $r 0],[lindex $r 1]) "."
     }
-  } else {
-    set done 0
-  }
+  } else { set done 0 }
 }
 
 puts "Part 1: $part1"
