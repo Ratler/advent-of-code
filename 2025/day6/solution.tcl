@@ -31,36 +31,31 @@ proc readFile {f} {
 
 proc readFilePart2 {f} {
   set lines {}
+  set maxLen 0
   set fh [open $f r]
   while {[gets $fh line] >= 0} {
     lappend lines $line
+    set len [string length $line]
+    if {$len > $maxLen} {
+      set maxLen $len
+    }
   }
   close $fh
 
-  set maxLen 0
-  foreach line $lines {
-    if {[string length $line] > $maxLen} {
-      set maxLen [string length $line]
-    }
-  }
-
-  set paddedLines {}
-  foreach line $lines {
-    lappend paddedLines [format "%-${maxLen}s" $line]
-  }
-
-  set opRow [lindex $paddedLines end]
-  set nrRows [lrange $paddedLines 0 end-1]
-  set data {}; set curData {}; set curOp ""
+  set opRow [lindex $lines end]
+  set nrRows [lrange $lines 0 end-1]
+  set data {}
+  set curData {}
+  set curOp ""
 
   for {set col [expr {$maxLen - 1}]} {$col >= 0} {incr col -1} {
     set op [string index $opRow $col]
     set numbers ""
 
     foreach row $nrRows {
-      set ch [string index $row $col]
-      if {$ch ne " "} {
-        append numbers $ch
+      if {$col < [string length $row]} {
+        set ch [string index $row $col]
+        if {$ch ne " "} { append numbers $ch }
       }
     }
 
@@ -71,12 +66,8 @@ proc readFilePart2 {f} {
         set curOp ""
       }
     } else {
-      if {$op ne " "} {
-        set curOp $op
-      }
-      if {$numbers ne ""} {
-        lappend curData $numbers
-      }
+      if {$op ne " "} { set curOp $op }
+      if {$numbers ne ""} { lappend curData $numbers }
     }
   }
 
